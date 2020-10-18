@@ -1,8 +1,9 @@
 {
   "name": "moccha-editor2-backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Backend Server for moccha-editor2",
+  "author": "M. Rayhan Hamada B. <hamadadev2016@gmail.com>",
+  "repository": "https://github.com/RayhanHamada/moccha-editor2-backend",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
