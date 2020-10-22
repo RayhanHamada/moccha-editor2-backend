@@ -6,8 +6,9 @@ import { Room } from './entities/room.entity';
 import { AuthService } from './auth.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Room], 'mongo')],
+  imports: [TypeOrmModule.forFeature([Room])],
   providers: [AuthService],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

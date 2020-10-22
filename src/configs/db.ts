@@ -3,7 +3,6 @@ import { ConnectionOptions } from 'typeorm';
 
 export const connections: ConnectionOptions[] = [
   {
-    name: 'mongo',
     type: 'mongodb',
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,

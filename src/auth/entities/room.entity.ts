@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 import { Player } from './player.entity';
 
-@Entity('room')
+@Entity('rooms')
 export class Room extends BaseEntity {
   @ObjectIdColumn()
   id: ObjectID;
