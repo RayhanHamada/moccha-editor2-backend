@@ -1,11 +1,21 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+
+import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 
 import { Room } from './entities/room.entity';
 
+const logger = new Logger('Auth Service');
 @Injectable()
 export class AuthService {
-  async getRooms(): Promise<Room[]> {
-    const rooms = await Room.find();
+  async getRooms(getRoomsDto: GetRoomsFilterDto): Promise<Room[]> {
+    const from: number = getRoomsDto.from ?? 0;
+    const limit: number = getRoomsDto.limit ?? 50;
+    logger.debug(`getRoomRequest with query from:${from}, limit:${limit}`);
+
+    const rooms = await Room.find({
+      skip: from,
+      take: limit,
+    });
 
     return rooms;
   }

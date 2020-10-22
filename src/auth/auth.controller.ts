@@ -1,5 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
+
 import { AuthService } from './auth.service';
+
+import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,7 +14,7 @@ export class AuthController {
   }
 
   @Get('/rooms')
-  getRooms() {
-    return this.authService.getRooms();
+  getRooms(@Query() getRoomsDto: GetRoomsFilterDto) {
+    return this.authService.getRooms(getRoomsDto);
   }
 }
