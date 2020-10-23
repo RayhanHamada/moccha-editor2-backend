@@ -1,14 +1,13 @@
-import { Transform } from 'class-transformer';
-import { IsInt, IsOptional, IsPositive } from 'class-validator';
+import { IsInt, IsOptional, Min } from 'class-validator';
 
 export class GetRoomsFilterDto {
   @IsOptional()
   @IsInt()
-  @IsPositive()
+  @Min(0)
   from: number;
 
   @IsOptional()
   @IsInt()
-  @IsPositive()
+  @Min(1)
   limit: number;
 }
