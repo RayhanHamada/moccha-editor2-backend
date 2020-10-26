@@ -1,8 +1,17 @@
-import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
+import { CreateRoomDto } from './dto/CreateRoomDto';
 
 const logger = new Logger('AuthController');
 
@@ -32,5 +41,11 @@ export class AuthController {
   ) {
     logger.debug(`get room with query param of => roomKey:${roomKey}`);
     return this.authService.getRoom(roomKey);
+  }
+
+  @Post('/room')
+  createRoom(@Body() createRoomDto: CreateRoomDto) {
+    // TODO: add debug logging
+    return this.authService.createRoom(createRoomDto);
   }
 }
