@@ -1,3 +1,4 @@
+import { IsUUID } from 'class-validator';
 import { BaseEntity, Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 import { Player } from './player.entity';
 
@@ -10,11 +11,14 @@ export class Room extends BaseEntity {
    * @description room key
    */
   @Column()
+  @IsUUID('4', {
+    message: arg => `${arg.targetName} is not a UUID V4`,
+  })
   roomKey: string;
 
   /**
    * @description room members
    */
-  @Column(type => Player)
+  @Column(() => Player)
   players: Player[];
 }
