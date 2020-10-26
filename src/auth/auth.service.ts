@@ -19,4 +19,14 @@ export class AuthService {
 
     return rooms;
   }
+
+  async getRoom(roomKey: string): Promise<Room> {
+    const room = await Room.findOne({
+      where: {
+        roomKey,
+      },
+    });
+
+    return room;
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
@@ -16,5 +16,13 @@ export class AuthController {
   @Get('/rooms')
   getRooms(@Query() getRoomsDto: GetRoomsFilterDto) {
     return this.authService.getRooms(getRoomsDto);
+  }
+
+  @Get('/room/:roomkey')
+  getRoom(
+    @Param('roomkey')
+    roomKey: string,
+  ) {
+    return this.authService.getRoom(roomKey);
   }
 }
