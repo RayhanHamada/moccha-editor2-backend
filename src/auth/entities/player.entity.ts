@@ -1,10 +1,10 @@
 import { IsNotEmpty } from 'class-validator';
-import { BaseEntity, Column } from 'typeorm';
+import { Column } from 'typeorm';
 
 /**
  * @description sub entity for room
  */
-export class Player extends BaseEntity {
+export class Player {
   /**
    * @description name of the player
    */
