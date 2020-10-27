@@ -36,9 +36,13 @@ export class AuthService {
     return room;
   }
 
-  async createRoom({ creatorName, creatorSocketId }: CreateRoomDto) {
+  async createRoom({
+    creatorName,
+    creatorSocketId,
+  }: CreateRoomDto): Promise<string> {
     const room = new Room();
-    room.roomKey = uuidV4();
+    const roomKey = uuidV4();
+    room.roomKey = roomKey;
     room.players = [
       {
         name: creatorName,
@@ -50,8 +54,6 @@ export class AuthService {
     await room.save();
     logger.debug(`room ${room.roomKey} is created !`);
 
-    return {
-      message: 'success',
-    };
+    return roomKey;
   }
 }
