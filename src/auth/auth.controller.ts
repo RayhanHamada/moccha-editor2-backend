@@ -45,7 +45,9 @@ export class AuthController {
 
   @Post('/room')
   createRoom(@Body() createRoomDto: CreateRoomDto) {
-    // TODO: add debug logging
+    logger.debug(
+      `createRoom creatorName: ${createRoomDto.creatorName} creatorSocketId:${createRoomDto.creatorSocketId}`,
+    );
     return this.authService.createRoom(createRoomDto);
   }
 }
