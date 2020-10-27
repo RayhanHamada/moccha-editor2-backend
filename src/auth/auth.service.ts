@@ -1,7 +1,8 @@
-import { HttpService, Injectable, Logger } from '@nestjs/common';
-import { CreateRoomDto } from './dto/CreateRoomDto';
+import { Injectable, Logger } from '@nestjs/common';
+import { v4 as uuidV4 } from 'uuid';
 
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
+import { CreateRoomDto } from './dto/CreateRoomDto';
 
 import { Room } from './entities/room.entity';
 
@@ -9,8 +10,6 @@ const logger = new Logger('Auth Service');
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly httpService: HttpService) {}
-
   async getRooms(getRoomsDto: GetRoomsFilterDto): Promise<Room[]> {
     const from = getRoomsDto.from ?? 0;
     const limit = getRoomsDto.limit ?? 50;
@@ -38,17 +37,8 @@ export class AuthService {
   }
 
   async createRoom({ creatorName, creatorSocketId }: CreateRoomDto) {
-    // TODO: add debug logging
     const room = new Room();
-    // fetch uuidv4
-    // TODO: change UUID source to just uuid package
-    const fetchedUUID: string = (
-      await this.httpService
-        .get('http://www.uuidgenerator.net/api/version4')
-        .toPromise()
-    ).data;
-
-    room.roomKey = fetchedUUID;
+    room.roomKey = uuidV4();
     room.players = [
       {
         name: creatorName,
@@ -58,6 +48,7 @@ export class AuthService {
     ];
 
     await room.save();
+    logger.debug(`room ${room.roomKey} is created !`);
 
     return {
       message: 'success',
