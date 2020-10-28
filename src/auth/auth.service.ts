@@ -1,5 +1,10 @@
 import { v4 as uuidV4 } from 'uuid';
-import { HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 import { CreateRoomDto } from './dto/CreateRoomDto';
@@ -30,6 +35,11 @@ export class AuthService {
         roomKey,
       },
     });
+
+    if (!room) {
+      logger.debug(`room ${roomKey} is not found`);
+      throw new NotFoundException();
+    }
 
     logger.debug(`room ${roomKey} is ${room === undefined ? 'not ' : ''}found`);
 
