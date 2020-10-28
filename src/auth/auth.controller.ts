@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -39,7 +40,7 @@ export class AuthController {
     @Param('roomkey')
     roomKey: string,
   ) {
-    logger.debug(`get room with query param of => roomKey:${roomKey}`);
+    logger.debug(`get room with query param of => roomKey: ${roomKey}`);
     return this.authService.getRoom(roomKey);
   }
 
@@ -49,5 +50,11 @@ export class AuthController {
       `createRoom creatorName: ${createRoomDto.creatorName} creatorSocketId:${createRoomDto.creatorSocketId}`,
     );
     return this.authService.createRoom(createRoomDto);
+  }
+
+  @Delete('/room/:roomkey')
+  removeRoom(@Param('roomkey') roomKey: string) {
+    logger.debug(`removeRoom roomKey: ${roomKey}`);
+    return this.authService.removeRoom(roomKey);
   }
 }

@@ -1,5 +1,5 @@
-import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidV4 } from 'uuid';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 import { CreateRoomDto } from './dto/CreateRoomDto';
@@ -55,5 +55,23 @@ export class AuthService {
     logger.debug(`room ${room.roomKey} is created !`);
 
     return roomKey;
+  }
+
+  async removeRoom(roomKey: string): Promise<HttpStatus> {
+    const room = await Room.findOne({
+      where: {
+        roomKey,
+      },
+    });
+
+    if (!room) {
+      logger.debug(`room ${roomKey} not exists`);
+      return HttpStatus.NO_CONTENT;
+    }
+
+    await room.remove();
+    logger.debug(`room ${roomKey} is deleted !`);
+
+    return HttpStatus.OK;
   }
 }
