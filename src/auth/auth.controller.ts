@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 import { CreateRoomDto } from './dto/CreateRoomDto';
+import { RoomKeyValidation } from './pipes/RoomKeyValidation.pipes';
 
 const logger = new Logger('AuthController');
 
@@ -37,7 +38,7 @@ export class AuthController {
 
   @Get('/room/:roomkey')
   getRoom(
-    @Param('roomkey')
+    @Param('roomkey', RoomKeyValidation)
     roomKey: string,
   ) {
     logger.debug(`get room with query param of => roomKey: ${roomKey}`);
@@ -53,7 +54,7 @@ export class AuthController {
   }
 
   @Delete('/room/:roomkey')
-  removeRoom(@Param('roomkey') roomKey: string) {
+  removeRoom(@Param('roomkey', RoomKeyValidation) roomKey: string) {
     logger.debug(`removeRoom roomKey: ${roomKey}`);
     return this.authService.removeRoom(roomKey);
   }
