@@ -1,7 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 import {
   BadRequestException,
-  HttpStatus,
   Injectable,
   Logger,
   NotFoundException,
@@ -51,9 +50,10 @@ export class AuthService {
   async createRoom({
     creatorName,
     creatorSocketId,
-  }: CreateRoomDto): Promise<string> {
+  }: CreateRoomDto): Promise<{ roomKey: string }> {
     const room = new Room();
     const roomKey = uuidV4();
+    
     room.roomKey = roomKey;
     room.players = [
       {
@@ -66,31 +66,25 @@ export class AuthService {
     await room.save();
     logger.debug(`room ${room.roomKey} is created !`);
 
-    return roomKey;
+    return {
+      roomKey,
+    };
   }
 
-  async removeRoom(roomKey: string): Promise<HttpStatus> {
-    const room = await Room.findOne({
-      where: {
-        roomKey,
-      },
-    });
-
-    if (!room) {
-      logger.debug(`room ${roomKey} not exists`);
-      return HttpStatus.NO_CONTENT;
-    }
+  async removeRoom(roomKey: string): Promise<void> {
+    const room = await this.getRoom(roomKey);
 
     await room.remove();
     logger.debug(`room ${roomKey} is deleted !`);
-
-    return HttpStatus.OK;
   }
 
-  async modifyRoom({ op, player, playerSocketId, roomKey }: ModifyRoomDto) {
+  async modifyRoom({
+    op,
+    player,
+    playerSocketId,
+    roomKey,
+  }: ModifyRoomDto): Promise<void> {
     const room = await this.getRoom(roomKey);
-
-    if (!room) throw new NotFoundException(`room ${roomKey} is not exists`);
 
     switch (op) {
       case 'addPlayer':
