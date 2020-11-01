@@ -5,15 +5,17 @@ import {
   Get,
   Logger,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
+import { RoomKeyValidation } from './pipes/RoomKeyValidation.pipes';
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 import { CreateRoomDto } from './dto/CreateRoomDto';
-import { RoomKeyValidation } from './pipes/RoomKeyValidation.pipes';
+import { ModifyRoomDto } from './dto/ModifyRoomDto';
 
 const logger = new Logger('AuthController');
 
@@ -57,5 +59,10 @@ export class AuthController {
   removeRoom(@Param('roomkey', RoomKeyValidation) roomKey: string) {
     logger.debug(`removeRoom roomKey: ${roomKey}`);
     return this.authService.removeRoom(roomKey);
+  }
+
+  @Patch('/room')
+  modifyRoom(@Body() modifyRoomDto: ModifyRoomDto) {
+    return this.authService.modifyRoom(modifyRoomDto);
   }
 }

@@ -1,5 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 import {
+  BadRequestException,
   HttpStatus,
   Injectable,
   Logger,
@@ -10,6 +11,7 @@ import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
 import { CreateRoomDto } from './dto/CreateRoomDto';
 
 import { Room } from './entities/room.entity';
+import { ModifyRoomDto } from './dto/ModifyRoomDto';
 
 const logger = new Logger('Auth Service');
 
@@ -83,5 +85,61 @@ export class AuthService {
     logger.debug(`room ${roomKey} is deleted !`);
 
     return HttpStatus.OK;
+  }
+
+  async modifyRoom({ op, player, playerSocketId, roomKey }: ModifyRoomDto) {
+    const room = await this.getRoom(roomKey);
+
+    if (!room) throw new NotFoundException(`room ${roomKey} is not exists`);
+
+    switch (op) {
+      case 'addPlayer':
+        if (!player)
+          throw new BadRequestException(
+            `player field should be specified for ${op} operation`,
+          );
+
+        room.players.push({
+          ...player,
+          isRM: false,
+        });
+
+        await room.save();
+        logger.debug(`player ${player.socketId} added to room ${roomKey}`);
+        break;
+      case 'removePlayer':
+        if (!playerSocketId)
+          throw new BadRequestException(
+            `playerSocketId field should be specified for ${op} operation`,
+          );
+
+        if (room.players.length === 1) {
+          await this.removeRoom(roomKey);
+          return;
+        }
+
+        room.players = room.players.filter(p => p.socketId !== playerSocketId);
+        console.log(room.players);
+        await room.save();
+        logger.debug(`player ${playerSocketId} removed from room ${roomKey}`);
+        break;
+      case 'changeRm':
+        if (!playerSocketId)
+          throw new BadRequestException(
+            `playerSocketId field should be specified for ${op} operation`,
+          );
+
+        room.players = room.players.map(p => {
+          if (p.socketId === playerSocketId) {
+            p.isRM = true;
+            return p;
+          }
+          p.isRM = false;
+          return p;
+        });
+
+        await room.save();
+        logger.debug(`player ${playerSocketId} is now rm of room ${roomKey}`);
+    }
   }
 }
