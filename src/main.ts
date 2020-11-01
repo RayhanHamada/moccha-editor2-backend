@@ -1,6 +1,8 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+
 import { AppModule } from './app.module';
+import { consumer } from './globals';
 
 async function bootstrap() {
   const logger = new Logger('bootstrap function');
@@ -13,6 +15,11 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.enableCors({
+    origin: consumer,
+  });
+
   const port = process.env.APP_PORT;
   await app
     .listen(port)
