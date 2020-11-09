@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
-import { AuthModule } from './auth/auth.module';
+import { RoomModule } from './room/room.module';
 import { AppService } from './app.service';
 import { dbModules } from './configs/db';
 
 @Module({
-  imports: [AuthModule, ...dbModules],
+  imports: [RoomModule, ...dbModules],
   controllers: [AppController],
   providers: [AppService],
 })

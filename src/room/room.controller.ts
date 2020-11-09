@@ -10,7 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { AuthService } from './auth.service';
+import { RoomService } from './room.service';
 
 import { RoomKeyValidation } from './pipes/RoomKeyValidation.pipes';
 import { GetRoomsFilterDto } from './dto/GetRoomsFilterDto';
@@ -20,8 +20,8 @@ import { ModifyRoomDto } from './dto/ModifyRoomDto';
 const logger = new Logger('AuthController');
 
 @Controller('auth')
-export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+export class RoomController {
+  constructor(private readonly authService: RoomService) {}
 
   @Get()
   home() {

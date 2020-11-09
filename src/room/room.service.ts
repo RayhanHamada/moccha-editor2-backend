@@ -15,7 +15,7 @@ import { ModifyRoomDto } from './dto/ModifyRoomDto';
 const logger = new Logger('Auth Service');
 
 @Injectable()
-export class AuthService {
+export class RoomService {
   async getRooms(getRoomsDto: GetRoomsFilterDto): Promise<Room[]> {
     const from = getRoomsDto.from ?? 0;
     const limit = getRoomsDto.limit ?? 50;
@@ -53,7 +53,7 @@ export class AuthService {
   }: CreateRoomDto): Promise<{ roomKey: string }> {
     const room = new Room();
     const roomKey = uuidV4();
-    
+
     room.roomKey = roomKey;
     room.players = [
       {
